@@ -2,18 +2,16 @@ const { Materias } = require("../db.js");
 
 const getAllMaterias = async (req, res) => {
   try {
-    let allMaterias = await Materias.findAll({attributes: [ "name" ]})
+    let allMaterias = await Materias.findAll()
     if (!allMaterias.length){
       const arr1 =  [
         'filosofía', 'historia', 'arte', 'matemáticas', 'ingles','lenguaje',
-        'biología', 'química', 'física'
+        'biología', 'química', 'física','geografía','música'
       ]
       for(let i = 0; i < arr1.length; i++){
         await Materias.create({ name: arr1[i] })
       }
-      allMaterias = await Materias.findAll({
-        attributes: ["name"]
-      });                 
+      allMaterias = await Materias.findAll();                 
       return res.status(200).json(allMaterias);
     }
     else res.status(200).json(allMaterias);
@@ -26,17 +24,17 @@ const createMaterias = async (req, res) => {
   try{
     const {name} = req.body;
     
-    const [Materias, created] = await Materias.findOrCreate({
-      where: { name }
+    const [materias, created] = await Materias.findOrCreate({
+      where: { name:name.toLowerCase()}
     });
-    if(!Materias) throw new Error("No se pudo crear la materia");
+    if(!materias) throw new Error("No se pudo crear la materia");
     const createdMsg = created ? "Materia creada exitosamente" : "materia ya existente"
     res.status(200).send({
       msg: createdMsg,
-      Materias: Materias,
+      Materias: name,
     });
   }catch(err){
-    res.status(500).send({ msg: "Erorr en el servidor: ", err: err.message });
+    res.status(400).send({ msg: "Erorr en el servidor: ", err: err.message });
   }
 }
 
@@ -50,7 +48,7 @@ const deleteMaterias = async (req, res) => {
     res.status(200).json({ msg: "Se elimino la materia" });
     
   } catch (error) {
-    res.status(500).send({ msg: "Error en el servidor: ", error: error.message });
+    res.status(400).send({ msg: "Error en el servidor: ", error: error.message });
   }
 };
 
@@ -63,11 +61,11 @@ const editMaterias = async (req, res) => {
     if (findMaterias) {
       const MateriasEdited = await Materias.update(
         {
-          name
+          name:name.toLowerCase()
         },	
         {	
           where: {	
-            name	
+            id	
           },	
         }	
       );	
