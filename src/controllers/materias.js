@@ -5,8 +5,14 @@ const getAllMaterias = async (req, res) => {
     let allMaterias = await Materias.findAll()
     if (!allMaterias.length){
       const arr1 =  [
-        'filosofía', 'historia', 'arte', 'matemáticas', 'ingles','lenguaje',
-        'biología', 'química', 'física','geografía','música'
+         'algebra','aritmética','geometría' ,'trigonometría', 
+        'biología', 'química', 'física',
+        'geografía','economía', 'historia',
+         'arte','música',
+         'literatura','lenguaje',
+         'filosofía','psicología',
+         'ingles','computación'
+       
       ]
       for(let i = 0; i < arr1.length; i++){
         await Materias.create({ name: arr1[i] })
