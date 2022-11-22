@@ -2,19 +2,19 @@ const { DataTypes } = require("sequelize");
 
 module.exports = (sequelize) => {
   sequelize.define("alumno", {
-    nombre: {
+    name: {
       type: DataTypes.STRING,
       allowNull: false,
     },
-    apellido: {
+    lastname: {
       type: DataTypes.STRING,
       allowNull: false,
     },
-    edad: {
+    age: {
       type: DataTypes.INTEGER,
       allowNull: false,
     },
-    foto: {
+    picture: {
       type: DataTypes.STRING,
     },
     email: {
