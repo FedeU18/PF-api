@@ -4,6 +4,7 @@ const { Router } = require('express');
 const Materias= require('./materias')
 const Search=require('./search')
 const Country=require("./country")
+const Alumno = require('./alumnos')
 
 const router = Router();
 
@@ -12,5 +13,6 @@ const router = Router();
 router.use('/',Search)
 router.use('/materias',Materias)
 router.use('/paises',Country)
+router.use('/alumnos',Alumno)
 
 module.exports = router;
