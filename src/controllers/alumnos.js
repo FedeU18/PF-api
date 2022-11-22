@@ -1,4 +1,4 @@
-
+//prueba
 const { Alumno } = require("../db.js");
 
 const createAlumno = async (req, res) => {
