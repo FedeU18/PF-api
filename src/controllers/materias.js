@@ -2,23 +2,22 @@ const { Materias } = require("../db.js");
 
 const getAllMaterias = async (req, res) => {
   try {
-    let allMaterias = await Materias.findAll();
-    if (!allMaterias.length) {
-      const arr1 = [
-        "filosofía",
-        "historia",
-        "arte",
-        "matemáticas",
-        "ingles",
-        "lenguaje",
-        "biología",
-        "química",
-        "física",
-        "geografía",
-        "música",
-      ];
-      for (let i = 0; i < arr1.length; i++) {
-        await Materias.create({ name: arr1[i] });
+
+    let allMaterias = await Materias.findAll()
+    if (!allMaterias.length){
+      const arr1 =  [
+         'algebra','aritmética','geometría' ,'trigonometría', 
+        'biología', 'química', 'física',
+        'geografía','economía', 'historia',
+         'arte','música',
+         'literatura','lenguaje',
+         'filosofía','psicología',
+         'ingles','computación'
+       
+      ]
+      for(let i = 0; i < arr1.length; i++){
+        await Materias.create({ name: arr1[i] })
+
       }
       allMaterias = await Materias.findAll();
       return res.status(200).json(allMaterias);
