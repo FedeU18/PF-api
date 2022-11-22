@@ -38,7 +38,7 @@ const createMaterias = async (req, res) => {
   }
 }
 
-const deleteMaterias = async (req, res) => {
+const deleteMaterias = async (req, res) => {     
   try {
     let { id } = req.params;       
     let buscarName = await Materias.findByPk(id); 
