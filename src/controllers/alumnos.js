@@ -1,8 +1,12 @@
-const { Alumno } = require("../db.js");
+const { Alumno, Country } = require("../db.js");
 
 const createAlumno = async (req, res) => {
-  const { name, lastname, picture, age, email } = req.body;
+  const { name, lastname, picture, age, email, country } = req.body;
   try {
+    let pais = await Country.findOne({
+      where: { name: country },
+    });
+    console.log(pais.id);
     const [objAlumno, created] = await Alumno.findOrCreate({
       where: { email },
       defaults: {
@@ -11,10 +15,12 @@ const createAlumno = async (req, res) => {
         picture,
         age,
         email,
+        countryId: pais.id,
       },
     });
-    if (created) res.status(200).send("alumno creado con exito");
-    else res.send("error al crear el alumno");
+    if (created) {
+      res.status(200).send("alumno creado con exito");
+    } else res.send("error al crear el alumno");
   } catch (err) {
     res.status(400).send({ msg: "Erorr en el servidor: ", err: err.message });
   }
@@ -26,8 +32,9 @@ const getAlumno = async (req, res) => {
   try {
     let alumno = await Alumno.findOne({
       where: { id },
+      include: [{ model: Country }],
     });
-    res.send(alumno);
+    res.send(alumno ? alumno : "alumno no encontrado");
   } catch (err) {
     res.status(400).send({ msg: "Erorr en el servidor: ", err: err.message });
   }
@@ -36,17 +43,22 @@ const getAlumno = async (req, res) => {
 const editAlumno = async (req, res) => {
   try {
     const { id } = req.params;
-    const { name, lastname, age, picture, email } = req.body;
+    const { name, lastname, age, picture, email, country } = req.body;
+
+    let pais = await Country.findOne({
+      where: { name: country },
+    });
 
     const findAlumno = await Alumno.findByPk(id);
     if (findAlumno) {
-      const AlumnoEdited = await Alumno.update(
+      await Alumno.update(
         {
           name: name.toLowerCase(),
           lastname: lastname.toLowerCase(),
           age: age,
           picture: picture,
           email: email,
+          countryId: pais.id,
         },
         {
           where: {
