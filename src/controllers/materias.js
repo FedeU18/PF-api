@@ -7,7 +7,7 @@ const getAllMaterias = async (req, res) => {
     if (!allMaterias.length){
       const arr1 =  [
          'algebra','aritmética','geometría' ,'trigonometría', 
-        'biología', 'química', 'física',
+        'biología', 'quimica', 'fisica',
         'geografía','economía', 'historia',
          'arte','música',
          'literatura','lenguaje',
