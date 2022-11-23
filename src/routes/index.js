@@ -4,7 +4,7 @@ const { Router } = require("express");
 const Materias = require("./materias");
 const Search = require("./search");
 const Country = require("./country");
-const Alumnos = require("./alumno.js");
+const Alumnos = require("./alumno");
 
 
 
