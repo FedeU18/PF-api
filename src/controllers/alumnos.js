@@ -36,8 +36,20 @@ const getAlumno = async (req, res) => {
     });
     res.send(alumno ? alumno : "alumno no encontrado");
   } catch (err) {
-    res.status(400).send({ msg: "Erorr en el servidor: ", err: err.message });
+    res.status(400).send({ msg: "Error en el servidor: ", err: err.message });
   }
+};
+
+const getAllAlumnos = async (req, res) => {
+  return Alumno.findAll({})
+    .then((alumnos) => {
+        res.send(alumnos)
+    })
+    .catch((err) => {
+      res.status(400).send({ msg: "Error en el servidor: ", err: err.message });
+    })
+
+  
 };
 
 const editAlumno = async (req, res) => {
@@ -94,6 +106,7 @@ const deleteAlumno = async (req, res) => {
 module.exports = {
   createAlumno,
   getAlumno,
+  getAllAlumnos,
   deleteAlumno,
   editAlumno,
 };

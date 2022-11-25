@@ -70,10 +70,14 @@ Materias.belongsToMany(Profesor, { through: "Profesor-Materias" });
 ////////////alumnos a profesores////////////
 
 ///////////alumnos a paises//////////////////
-// Alumno.belongsTo(Country);
-// Country.belongsTo(Alumno);
+
 Country.hasMany(Alumno);
 Alumno.belongsTo(Country);
+
+///////////profesor - paises//////////////////
+
+Country.hasMany(Profesor);
+Profesor.belongsTo(Country);
 
 module.exports = {
   ...sequelize.models, // para poder importar los modelos así: const { Product, User } = require('./db.js');
