@@ -1,35 +1,20 @@
-
-
-const {Profesor,Materias, Country } = require("../db.js");
-
+const { Profesor, Materias, Country } = require("../db.js");
 
 const getProfesor = async (req, res) => {
   let { nombre } = req.query;
 
-
-
-
-
-
-
-
-let info = await Profesor.findAll({
-  
-  include :[{
-    model: Materias,    // va a buscar en el modelo mterias
-    attributes:["name"],
-    through: {
-
-        attributes: [],
+  let info = await Profesor.findAll({
+    include: [
+      {
+        model: Materias, // va a buscar en el modelo mterias
+        attributes: ["name"],
+        through: {
+          attributes: [],
+        },
       },
-    },
-
- 
-
-    
-     },{model:Country}]
-})
-
+      { model: Country },
+    ],
+  });
 
   try {
     if (nombre) {
@@ -52,19 +37,18 @@ let info = await Profesor.findAll({
 const getById = async (req, res) => {
   let { id } = req.params;
 
-
-
-  const infoId = await Profesor.findByPk(id , {
-    include :[{
-      model: Materias,    // va a buscar en el modelo mterias
-      attributes:["name"],
-      through: {
+  const infoId = await Profesor.findByPk(id, {
+    include: [
+      {
+        model: Materias, // va a buscar en el modelo mterias
+        attributes: ["name"],
+        through: {
           attributes: [],
+        },
       },
-      
-       },{model:Country}]
-  })
-  
+      { model: Country },
+    ],
+  });
 
   console.log(infoId);
   try {
@@ -78,10 +62,10 @@ const getById = async (req, res) => {
   }
 };
 
-
 const postProfe = async (req, res) => {
   const {
     nombre,
+    apellido,
     username,
     imagen,
     email,
@@ -95,61 +79,26 @@ const postProfe = async (req, res) => {
 
   console.log(req.body);
   try {
-    let NewProfesor = await Profesor.create({
-      nombre,
-      username,
-      imagen,
-      email,
-      pais,
-      puntuacion,
-      descripcion,
-      precio,
-      estudios,
-    });
-    let FindMaterias = await Materias.findAll({
-      where: { name: materias },
+    let findPais = await Country.findOne({
+      where: { name: pais },
     });
 
-const  {nombre,apellido,username,imagen,email,pais,puntuacion,descripcion,precio,estudios,materias } = req.body
+    if (findPais) {
+      let NewProfesor = await Profesor.create({
+        nombre,
+        apellido,
+        username,
+        imagen,
+        email,
+        countryId: findPais.id,
+        puntuacion,
+        descripcion,
+        precio,
+        estudios,
+      });
 
-  console.log(req.body);
-try{
-  
-  let findPais = await Country.findOne({
-    where: { name: pais },
-  });  
-
-  if(findPais){
-    let NewProfesor = await Profesor.create({
-      nombre,
-      apellido,
-      username,
-      imagen,
-      email,
-      countryId: findPais.id,
-      puntuacion,
-      descripcion,
-      precio,
-      estudios
-      
-     });
-    
-     await NewProfesor.setMaterias(await materias)
-
-  }
-  
-  
-
-  res.status(200).send("perfil Creado Correctamente");
-
-
-}catch(e){
-console.log(e);
-}
-
-
-
-    NewProfesor.addMaterias(FindMaterias);
+      await NewProfesor.setMaterias(await materias);
+    }
 
     res.status(200).send("perfil Creado Correctamente");
   } catch (e) {
@@ -174,15 +123,25 @@ const deleteProfesor = async (req, res) => {
 //put
 const putProfesor = async (req, res) => {
   const { id } = req.params;
-
-  const { nombre,apellido, username,image ,email,pais,puntuacion,descripcion,precio,estudios,materias } = req.body;
+  const {
+    nombre,
+    apellido,
+    username,
+    image,
+    email,
+    pais,
+    puntuacion,
+    descripcion,
+    precio,
+    estudios,
+    materias,
+  } = req.body;
   try {
     const updateProfesor = await Profesor.findByPk(id);
     updateProfesor.nombre = nombre;
     updateProfesor.apellido = apellido;
-    updateProfesor.username= username;
+    updateProfesor.username = username;
     updateProfesor.image = image;
-
     updateProfesor.email = email;
     updateProfesor.pais = pais;
     updateProfesor.puntuacion = puntuacion;
