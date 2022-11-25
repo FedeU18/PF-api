@@ -72,7 +72,7 @@ const getById = async (req,res)=>{
 
 const postProfe = async (req,res)=>{
 
-const  {nombre,username,imagen,email,pais,puntuacion,descripcion,precio,estudios,materias } = req.body
+const  {nombre,apellido,username,imagen,email,pais,puntuacion,descripcion,precio,estudios,materias } = req.body
 
   console.log(req.body);
 try{
@@ -84,6 +84,7 @@ try{
   if(findPais){
     let NewProfesor = await Profesor.create({
       nombre,
+      apellido,
       username,
       imagen,
       email,
@@ -124,7 +125,7 @@ const deleteProfesor = async (req, res) => {
 
     res.status(200).json({msg:"Usuario borrado correctamente!"});
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    res.status(404).json({ message: error.message });
   }
 };
 
@@ -135,12 +136,13 @@ const deleteProfesor = async (req, res) => {
 //put
 const putProfesor =  async (req, res) => {
   const { id } = req.params;
-  const { nombre, username,image ,email,pais,puntuacion,descripcion,precio,estudios,materias } = req.body;
+  const { nombre,apellido, username,image ,email,pais,puntuacion,descripcion,precio,estudios,materias } = req.body;
   try {
     const updateProfesor = await Profesor.findByPk(id);
     updateProfesor.nombre = nombre;
-    updateProfesor.image = image;
+    updateProfesor.apellido = apellido;
     updateProfesor.username= username;
+    updateProfesor.image = image;
     updateProfesor.email = email;
     updateProfesor.pais = pais;
     updateProfesor.puntuacion = puntuacion;
@@ -151,7 +153,7 @@ const putProfesor =  async (req, res) => {
     await updateProfesor.save();
     res.status(200).json({msg:"cambios realizados correctamente "})
   } catch (error) {
-    res.status(500).json(console.log(error));
+    res.status(404).json({ message: error.message });
   }
 };
 
