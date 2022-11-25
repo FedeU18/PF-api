@@ -10,41 +10,31 @@ module.exports = (sequelize) => {
     nombre: {
       type: DataTypes.STRING,
       allowNull: false,
-    
-
+    },
+    apellido: {
+      type: DataTypes.STRING,
+      allowNull:false
     },
     username:{
       type:DataTypes.STRING,
       allowNull: true,
     },
-    contraseña:{
-      type:DataTypes.STRING,
-      allowNull:true,
-    },
-
     descripcion:{
       type :DataTypes.TEXT,
       allowNull: true,
     },
-
     imagen:{
       type: DataTypes.STRING,
       allowNull: true
     },
     email:{
       type:DataTypes.STRING,
-      allowNulls: true
-    },
-    pais:{
-      type:DataTypes.STRING,
-      allowNull:true
+      allowNull: true
     },
     precio:{
-      type:DataTypes.INTEGER,
+      type:DataTypes.STRING,
       allowNull:true 
     },
-    
-    
     puntuacion:{
       type: DataTypes.ARRAY(DataTypes.DECIMAL),
 
@@ -56,13 +46,9 @@ module.exports = (sequelize) => {
       allowNull: true
 
     },
-
     estudios:{
-      type:DataTypes.ARRAY(DataTypes.STRING),
+      type: DataTypes.STRING,
       allowNull: true
     }
-
- 
-
   });
 };

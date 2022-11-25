@@ -70,21 +70,19 @@ const getById = async (req,res)=>{
 
 const postProfe = async (req,res)=>{
 
-const  {nombre,username,imagen,email,pais,puntuacion,descripcion,precio,estudios,materias } = req.body
+const  {nombre,apellido,username,imagen,email,descripcion,precio,estudios,materias } = req.body
 
   console.log(req.body);
 try{
     let NewProfesor = await Profesor.create({
      nombre,
+     apellido,
      username,
      imagen,
      email,
-     pais,
-     puntuacion,
      descripcion,
      precio,
      estudios
-
     });
   let FindMaterias = await Materias.findAll({
     where: {name: materias }
