@@ -72,7 +72,7 @@ const getById = async (req,res)=>{
 
 const postProfe = async (req,res)=>{
 
-const  {nombre,apellido,username,imagen,email,descripcion,precio,estudios,materias } = req.body
+const  {nombre,username,imagen,email,pais,puntuacion,descripcion,precio,estudios,materias } = req.body
 
   console.log(req.body);
 try{
@@ -99,7 +99,7 @@ try{
 
   }
   
-
+  
 
   res.status(200).send("perfil Creado Correctamente");
 
