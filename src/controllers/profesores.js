@@ -1,17 +1,35 @@
-const { Profesor, Materias } = require("../db.js");
+
+
+const {Profesor,Materias, Country } = require("../db.js");
+
 
 const getProfesor = async (req, res) => {
   let { nombre } = req.query;
 
-  let info = await Profesor.findAll({
-    include: {
-      model: Materias, // va a buscar en el modelo mterias
-      attributes: ["name"],
-      through: {
+
+
+
+
+
+
+
+let info = await Profesor.findAll({
+  
+  include :[{
+    model: Materias,    // va a buscar en el modelo mterias
+    attributes:["name"],
+    through: {
+
         attributes: [],
       },
     },
-  });
+
+ 
+
+    
+     },{model:Country}]
+})
+
 
   try {
     if (nombre) {
@@ -34,15 +52,19 @@ const getProfesor = async (req, res) => {
 const getById = async (req, res) => {
   let { id } = req.params;
 
-  const infoId = await Profesor.findByPk(id, {
-    include: {
-      model: Materias,
-      atributes: ["name"],
-      throught: {
-        attributes: [],
+
+
+  const infoId = await Profesor.findByPk(id , {
+    include :[{
+      model: Materias,    // va a buscar en el modelo mterias
+      attributes:["name"],
+      through: {
+          attributes: [],
       },
-    },
-  });
+      
+       },{model:Country}]
+  })
+  
 
   console.log(infoId);
   try {
@@ -55,6 +77,7 @@ const getById = async (req, res) => {
     console.log(e);
   }
 };
+
 
 const postProfe = async (req, res) => {
   const {
@@ -87,6 +110,45 @@ const postProfe = async (req, res) => {
       where: { name: materias },
     });
 
+const  {nombre,apellido,username,imagen,email,pais,puntuacion,descripcion,precio,estudios,materias } = req.body
+
+  console.log(req.body);
+try{
+  
+  let findPais = await Country.findOne({
+    where: { name: pais },
+  });  
+
+  if(findPais){
+    let NewProfesor = await Profesor.create({
+      nombre,
+      apellido,
+      username,
+      imagen,
+      email,
+      countryId: findPais.id,
+      puntuacion,
+      descripcion,
+      precio,
+      estudios
+      
+     });
+    
+     await NewProfesor.setMaterias(await materias)
+
+  }
+  
+  
+
+  res.status(200).send("perfil Creado Correctamente");
+
+
+}catch(e){
+console.log(e);
+}
+
+
+
     NewProfesor.addMaterias(FindMaterias);
 
     res.status(200).send("perfil Creado Correctamente");
@@ -105,30 +167,22 @@ const deleteProfesor = async (req, res) => {
 
     res.status(200).json({ msg: "Usuario borrado correctamente!" });
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    res.status(404).json({ message: error.message });
   }
 };
 
 //put
 const putProfesor = async (req, res) => {
   const { id } = req.params;
-  const {
-    nombre,
-    username,
-    image,
-    email,
-    pais,
-    puntuacion,
-    descripcion,
-    precio,
-    estudios,
-    materias,
-  } = req.body;
+
+  const { nombre,apellido, username,image ,email,pais,puntuacion,descripcion,precio,estudios,materias } = req.body;
   try {
     const updateProfesor = await Profesor.findByPk(id);
     updateProfesor.nombre = nombre;
+    updateProfesor.apellido = apellido;
+    updateProfesor.username= username;
     updateProfesor.image = image;
-    updateProfesor.username = username;
+
     updateProfesor.email = email;
     updateProfesor.pais = pais;
     updateProfesor.puntuacion = puntuacion;
@@ -139,7 +193,7 @@ const putProfesor = async (req, res) => {
     await updateProfesor.save();
     res.status(200).json({ msg: "cambios realizados correctamente " });
   } catch (error) {
-    res.status(500).json(console.log(error));
+    res.status(404).json({ message: error.message });
   }
 };
 
