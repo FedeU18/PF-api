@@ -1,4 +1,4 @@
-const {Profesor,Materias} = require("../db.js");
+const {Profesor,Materias, Country } = require("../db.js");
 
 
 
@@ -11,13 +11,14 @@ let {nombre} = req.query
 
 let info = await Profesor.findAll({
   
-  include :{
+  include :[{
     model: Materias,    // va a buscar en el modelo mterias
     attributes:["name"],
     through: {
         attributes: [],
     },
-     },
+    
+     },{model:Country}]
 })
 
 try{
@@ -44,13 +45,14 @@ const getById = async (req,res)=>{
   let {id}=req.params;
 
   const infoId = await Profesor.findByPk(id , {
-    include: {
-      model: Materias, 
-      atributes: ['name'], 
-      throught: { 
-          attributes: [] ,
-      }
-  }
+    include :[{
+      model: Materias,    // va a buscar en el modelo mterias
+      attributes:["name"],
+      through: {
+          attributes: [],
+      },
+      
+       },{model:Country}]
   })
   
   console.log(infoId);
@@ -74,23 +76,30 @@ const  {nombre,username,imagen,email,pais,puntuacion,descripcion,precio,estudios
 
   console.log(req.body);
 try{
-    let NewProfesor = await Profesor.create({
-     nombre,
-     username,
-     imagen,
-     email,
-     pais,
-     puntuacion,
-     descripcion,
-     precio,
-     estudios
+  
+  let findPais = await Country.findOne({
+    where: { name: pais },
+  });  
 
-    });
-  let FindMaterias = await Materias.findAll({
-    where: {name: materias }
-  });
-   
-  NewProfesor.addMaterias(FindMaterias);
+  if(findPais){
+    let NewProfesor = await Profesor.create({
+      nombre,
+      username,
+      imagen,
+      email,
+      countryId: findPais.id,
+      puntuacion,
+      descripcion,
+      precio,
+      estudios
+      
+     });
+    
+     await NewProfesor.setMaterias(await materias)
+
+  }
+  
+  
 
   res.status(200).send("perfil Creado Correctamente");
 

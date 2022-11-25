@@ -4,13 +4,9 @@ const { DataTypes } = require('sequelize');
 module.exports = (sequelize) => {
   // defino el modelo
   sequelize.define('profesor', {
-   
-
-
     nombre: {
       type: DataTypes.STRING,
-      allowNull: false,
-    
+      allowNull: false,    
 
     },
     username:{
@@ -29,26 +25,21 @@ module.exports = (sequelize) => {
 
     imagen:{
       type: DataTypes.STRING,
+      // defaultValue:'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460__480.png',
       allowNull: true
     },
     email:{
       type:DataTypes.STRING,
       allowNulls: true
     },
-    pais:{
-      type:DataTypes.STRING,
-      allowNull:true
-    },
+  
     precio:{
       type:DataTypes.INTEGER,
       allowNull:true 
-    },
-    
+    },   
     
     puntuacion:{
-      type: DataTypes.ARRAY(DataTypes.DECIMAL),
-
-      
+      type: DataTypes.ARRAY(DataTypes.DECIMAL),      
       validate: {
         min: 1,
         max: 5,
