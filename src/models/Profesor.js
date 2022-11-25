@@ -9,13 +9,13 @@ module.exports = (sequelize) => {
       allowNull: false,    
 
     },
+    apellido:{
+      type:DataTypes.STRING,
+      allowNull:false
+    },
     username:{
       type:DataTypes.STRING,
       allowNull: true,
-    },
-    contraseña:{
-      type:DataTypes.STRING,
-      allowNull:true,
     },
 
     descripcion:{
