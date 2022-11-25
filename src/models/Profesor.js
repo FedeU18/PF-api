@@ -6,20 +6,23 @@ module.exports = (sequelize) => {
   sequelize.define('profesor', {
     nombre: {
       type: DataTypes.STRING,
-      allowNull: false,
-    },
-    apellido: {
-      type: DataTypes.STRING,
-      allowNull:false
+      allowNull: false,    
+
     },
     username:{
       type:DataTypes.STRING,
       allowNull: true,
     },
+    contraseña:{
+      type:DataTypes.STRING,
+      allowNull:true,
+    },
+
     descripcion:{
       type :DataTypes.TEXT,
       allowNull: true,
     },
+
     imagen:{
       type: DataTypes.STRING,
       // defaultValue:'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460__480.png',
@@ -27,12 +30,14 @@ module.exports = (sequelize) => {
     },
     email:{
       type:DataTypes.STRING,
-      allowNull: true
+      allowNulls: true
     },
+  
     precio:{
-      type:DataTypes.STRING,
+      type:DataTypes.INTEGER,
       allowNull:true 
-    },  
+    },   
+    
     puntuacion:{
       type: DataTypes.ARRAY(DataTypes.DECIMAL),      
       validate: {
@@ -42,9 +47,13 @@ module.exports = (sequelize) => {
       allowNull: true
 
     },
+
     estudios:{
-      type: DataTypes.STRING,
+      type:DataTypes.ARRAY(DataTypes.STRING),
       allowNull: true
     }
+
+ 
+
   });
 };
