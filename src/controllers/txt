@@ -1,0 +1,44 @@
+const editAlumno = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { name, lastname, age, picture, email, country } = req.body;
+
+    console.log("holaa lllegue linea 60");
+
+    const findAlumno = await Alumno.findByPk(id);
+    console.log(findAlumno);
+    var fields = {};
+    fields.apellidos = "luna";
+    if (name) fields.name = name;
+    if (lastname) fields.lastname = lastname;
+    if (age) fields.age = age;
+    if (picture) fields.picture = picture;
+    if (email) fields.email = email;
+    if (country) {
+      let pais = await Country.findOne({
+        where: { name: country },
+      });
+      if (pais) {
+        console.log("se encontro el pais ", pais.dataValues.name);
+        fields.country = pais.dataValues.name;
+      }
+    }
+    console.log("jjjjjjjhjhjghjhghjgujgjhghjhjhujhujhujhujhjhjhujhujh");
+    console.log(fields);
+    if (fields === {})
+      throw new Error("No se recibieron parametros para cambiar");
+
+    if (findAlumno) {
+      await findAlumno.update(fields);
+
+      res.status(200).send("Cambios guardados");
+    } else {
+      throw new Error(
+        "No se ha encontrado una categoria existente con el id ingresado."
+      );
+    }
+  } catch (err) {
+    console.log(err);
+    res.status(400).send(fields);
+  }
+};

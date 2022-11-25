@@ -3,10 +3,11 @@ const { Alumno, Country } = require("../db.js");
 const createAlumno = async (req, res) => {
   const { name, lastname, picture, age, email, country } = req.body;
   try {
+    console.log(country[0].toUpperCase() + country.substring(1));
     let pais = await Country.findOne({
-      where: { name: country },
+      where: { name: country[0].toUpperCase() + country.substring(1) },
     });
-    console.log(pais.id);
+    console.log("este es el pais encontrado ", pais.id);
     const [objAlumno, created] = await Alumno.findOrCreate({
       where: { email },
       defaults: {
@@ -34,7 +35,17 @@ const getAlumno = async (req, res) => {
       where: { id },
       include: [{ model: Country }],
     });
-    res.send(alumno ? alumno : "alumno no encontrado");
+    let objAlumno = {
+      id: alumno.id,
+      name: alumno.name[0].toUpperCase() + alumno.name.substring(1),
+      lastname: alumno.lastname[0].toUpperCase() + alumno.lastname.substring(1),
+      age: alumno.age,
+      email: alumno.email,
+      picture: alumno.picture,
+      country: alumno.country.name,
+    };
+
+    res.send(alumno ? objAlumno : "alumno no encontrado");
   } catch (err) {
     res.status(400).send({ msg: "Erorr en el servidor: ", err: err.message });
   }
@@ -45,27 +56,32 @@ const editAlumno = async (req, res) => {
     const { id } = req.params;
     const { name, lastname, age, picture, email, country } = req.body;
 
-    let pais = await Country.findOne({
-      where: { name: country },
-    });
+    console.log("holaa lllegue linea 60");
 
     const findAlumno = await Alumno.findByPk(id);
+    console.log(findAlumno);
+    var fields = {};
+    fields.apellidos = "luna";
+    if (name) fields.name = name;
+    if (lastname) fields.lastname = lastname;
+    if (age) fields.age = age;
+    if (picture) fields.picture = picture;
+    if (email) fields.email = email;
+    if (country) {
+      let pais = await Country.findOne({
+        where: { name: country[0].toUpperCase() + country.substring(1) },
+      });
+      if (pais) {
+        fields.countryId = pais.id;
+      }
+    }
+    console.log(fields);
+    if (fields === {})
+      throw new Error("No se recibieron parametros para cambiar");
+
     if (findAlumno) {
-      await Alumno.update(
-        {
-          name: name.toLowerCase(),
-          lastname: lastname.toLowerCase(),
-          age: age,
-          picture: picture,
-          email: email,
-          countryId: pais.id,
-        },
-        {
-          where: {
-            id,
-          },
-        }
-      );
+      await findAlumno.update(fields);
+
       res.status(200).send("Cambios guardados");
     } else {
       throw new Error(
@@ -74,7 +90,7 @@ const editAlumno = async (req, res) => {
     }
   } catch (err) {
     console.log(err);
-    res.status(400).send("hubo un error");
+    res.status(400).send(fields);
   }
 };
 
