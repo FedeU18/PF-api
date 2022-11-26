@@ -1,7 +1,8 @@
 const { Alumno, Country } = require("../db.js");
 
 const createAlumno = async (req, res) => {
-  const { name, lastname, picture, age, email, country } = req.body;
+  const { id, name, lastname, picture, age, email, country } = req.body;
+  console.log(id);
   try {
     console.log(country[0].toUpperCase() + country.substring(1));
     let pais = await Country.findOne({
@@ -11,6 +12,7 @@ const createAlumno = async (req, res) => {
     const [objAlumno, created] = await Alumno.findOrCreate({
       where: { email },
       defaults: {
+        id,
         name,
         lastname,
         picture,
@@ -23,6 +25,7 @@ const createAlumno = async (req, res) => {
       res.status(200).send("alumno creado con exito");
     } else res.send("error al crear el alumno");
   } catch (err) {
+    console.log(err);
     res.status(400).send({ msg: "Erorr en el servidor: ", err: err.message });
   }
 };
@@ -54,13 +57,11 @@ const getAlumno = async (req, res) => {
 const getAllAlumnos = async (req, res) => {
   return Alumno.findAll({})
     .then((alumnos) => {
-        res.send(alumnos)
+      res.send(alumnos);
     })
     .catch((err) => {
       res.status(400).send({ msg: "Error en el servidor: ", err: err.message });
-    })
-
-  
+    });
 };
 
 const editAlumno = async (req, res) => {
