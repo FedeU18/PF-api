@@ -85,6 +85,7 @@ const postProfe = async (req, res) => {
 
     if (findPais) {
       let NewProfesor = await Profesor.create({
+        tipo: "profesor",
         nombre,
         apellido,
         username,
