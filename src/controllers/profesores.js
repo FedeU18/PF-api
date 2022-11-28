@@ -64,6 +64,7 @@ const getById = async (req, res) => {
 
 const postProfe = async (req, res) => {
   const {
+    id,
     nombre,
     apellido,
     username,
@@ -85,6 +86,7 @@ const postProfe = async (req, res) => {
 
     if (findPais) {
       let NewProfesor = await Profesor.create({
+        id,
         tipo: "profesor",
         nombre,
         apellido,
