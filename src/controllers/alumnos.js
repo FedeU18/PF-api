@@ -14,6 +14,7 @@ const createAlumno = async (req, res) => {
       where: { email },
       defaults: {
         id,
+        tipo: "estudiante",
         name,
         lastname,
         picture,
@@ -41,6 +42,7 @@ const getAlumno = async (req, res) => {
     });
     let objAlumno = {
       id: alumno.id,
+      tipo: alumno.tipo,
       name: alumno.name[0].toUpperCase() + alumno.name.substring(1),
       lastname: alumno.lastname[0].toUpperCase() + alumno.lastname.substring(1),
       age: alumno.age,
