@@ -1,6 +1,7 @@
 const { Alumno, Country } = require("../db.js");
 
 const createAlumno = async (req, res) => {
+  //hicimos cambios desde fabian menjura
   const { id, name, lastname, picture, age, email, country } = req.body;
   console.log(id);
   try {
