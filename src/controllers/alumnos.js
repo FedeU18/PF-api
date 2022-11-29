@@ -1,6 +1,7 @@
 const { Alumno, Country } = require("../db.js");
 
 const createAlumno = async (req, res) => {
+  //hicimos cambios desde fabian menjura
   const { id, name, lastname, picture, age, email, country } = req.body;
   console.log(id);
   try {
@@ -13,6 +14,7 @@ const createAlumno = async (req, res) => {
       where: { email },
       defaults: {
         id,
+        tipo: "estudiante",
         name,
         lastname,
         picture,
@@ -40,6 +42,7 @@ const getAlumno = async (req, res) => {
     });
     let objAlumno = {
       id: alumno.id,
+      tipo: alumno.tipo,
       name: alumno.name[0].toUpperCase() + alumno.name.substring(1),
       lastname: alumno.lastname[0].toUpperCase() + alumno.lastname.substring(1),
       age: alumno.age,
