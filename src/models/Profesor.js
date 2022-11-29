@@ -55,9 +55,14 @@ module.exports = (sequelize) => {
       allowNull: true,
     },
 
-    estudios: {
-      type: DataTypes.ARRAY(DataTypes.STRING),
-      allowNull: true,
-    },
+
+    estudios:{
+      type:DataTypes.ARRAY(DataTypes.STRING),
+      allowNull: true
+    }
+
+ 
+
   },{timestamps: false});
 };
+
