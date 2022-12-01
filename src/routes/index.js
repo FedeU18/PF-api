@@ -5,14 +5,9 @@ const Materias = require("./materias");
 const Search = require("./search");
 const Country = require("./country");
 const Alumnos = require("./alumno");
+const Stripe = require("./stripe");
 
-
-
-
-const Profesor =require("./profesores") 
-
-
-
+const Profesor = require("./profesores");
 
 const router = Router();
 
@@ -24,12 +19,7 @@ router.use("/materias", Materias);
 router.use("/paises", Country);
 router.use("/alumnos", Alumnos);
 
-
-
-router.use("/profesores",Profesor)
-
-
-
-
+router.use("/profesores", Profesor);
+router.use("/stripe", Stripe);
 
 module.exports = router;

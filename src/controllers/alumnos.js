@@ -2,7 +2,8 @@ const { Alumno, Country } = require("../db.js");
 
 const createAlumno = async (req, res) => {
   //hicimos cambios desde fabian menjura
-  const { id, name, lastname, picture, age, email, country } = req.body;
+  const { id, name, lastname, picture, age, email, country, username } =
+    req.body;
   console.log(id);
   try {
     console.log(country[0].toUpperCase() + country.substring(1));
@@ -21,6 +22,7 @@ const createAlumno = async (req, res) => {
         age,
         email,
         countryId: pais.id,
+        username,
       },
     });
     if (created) {
@@ -49,6 +51,7 @@ const getAlumno = async (req, res) => {
       email: alumno.email,
       picture: alumno.picture,
       country: alumno.country.name,
+      username: alumno.username,
     };
 
     res.send(alumno ? objAlumno : "alumno no encontrado");
