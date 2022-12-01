@@ -1,4 +1,4 @@
-const { Profesor, Materias, Country } = require("../db.js");
+const { Profesor, Materias, Country,Puntuacion,Certificado,Coments, Alumno  } = require("../db.js");
 
 const getProfesor = async (req, res) => {
   let { nombre } = req.query;
@@ -13,6 +13,10 @@ const getProfesor = async (req, res) => {
         },
       },
       { model: Country },
+      { model:Puntuacion,
+        attributes:["puntaje"]
+      },
+     
     ],
   });
 
@@ -47,6 +51,20 @@ const getById = async (req, res) => {
         },
       },
       { model: Country },
+      { model:Puntuacion},
+      { model:Certificado },
+      {model:Coments,
+        attributes:["id","contenido","likes"],
+      include:[
+        {model:Alumno,
+          attributes:["id","name","lastname","picture"]},
+        {model:Coments,
+          attributes:["id","contenido","likes"],
+          include:[
+            {model:Alumno,
+              attributes:["id","name","lastname","picture"]},
+          ]}
+      ]}
     ],
   });
 
