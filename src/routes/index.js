@@ -10,6 +10,7 @@ const Profesor = require("./profesores");
 const Comentarios = require ("./Comentarios")
 const Certificado=require("./certficado")
 const Puntajes=require("./Puntuacion")
+const Fechas = require("./fechas")
 
 const router = Router();
 
@@ -22,5 +23,6 @@ router.use("/comentarios", Comentarios)
 router.use("/certificados", Certificado)
 router.use("/puntajes",Puntajes)
 router.use("/profesores",Profesor)
+router.use("/fechas", Fechas)
 
 module.exports = router;
