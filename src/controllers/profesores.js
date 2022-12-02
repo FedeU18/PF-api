@@ -41,7 +41,7 @@ const getProfesor = async (req, res) => {
 const getById = async (req, res) => {
   let { id } = req.params;
 
-  const infoId = await Profesor.findByPk(id, {
+  let infoId = await Profesor.findByPk(id, {
     include: [
       {
         model: Materias, // va a buscar en el modelo mterias
@@ -51,30 +51,64 @@ const getById = async (req, res) => {
         },
       },
       { model: Country },
-      { model:Puntuacion},
+      { model:Puntuacion,
+        include:[
+          {model:Alumno,
+            attributes:["id","name","lastname","picture"]}
+        ]},
       { model:Certificado },
       {model:Coments,
         attributes:["id","contenido","likes"],
       include:[
         {model:Alumno,
-          attributes:["id","name","lastname","picture"]},
+          attributes:["id","name","lastname","picture"],
+          include:[
+            {model:Country}
+          ]
+        
+        },
         {model:Coments,
           attributes:["id","contenido","likes"],
           include:[
             {model:Alumno,
-              attributes:["id","name","lastname","picture"]},
+              attributes:["id","name","lastname","picture"],
+              include:[
+                {model:Country}
+              ]
+            },
+              
+            {model:Profesor,
+              attributes:["id","nombre","apellido","username","imagen"],
+              include:[
+                {model:Country}
+              ]
+              }
           ]}
       ]}
     ],
   });
 
-  console.log(infoId);
+ if(infoId){
+  function SortArray(y, x){
+    if (x.id < y.id) {return -1;}
+    if (x.id > y.id) {return 1;}
+    return 0;
+}
+  infoId.coments=infoId.coments.sort(SortArray)
+
+
+
+ }
+
+  // console.log(infonew);
   try {
     if (!infoId) {
       res.status(404).json({ msg: " no se encontro el profesor" });
+    }else{
+
+      res.status(200).json(infoId);
     }
 
-    res.status(200).json(infoId);
   } catch (e) {
     console.log(e);
   }

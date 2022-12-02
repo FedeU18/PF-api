@@ -42,19 +42,15 @@ const getAlumno = async (req, res) => {
       where: { id },
       include: [{ model: Country }],
     });
-    let objAlumno = {
-      id: alumno.id,
-      tipo: alumno.tipo,
-      name: alumno.name[0].toUpperCase() + alumno.name.substring(1),
-      lastname: alumno.lastname[0].toUpperCase() + alumno.lastname.substring(1),
-      age: alumno.age,
-      email: alumno.email,
-      picture: alumno.picture,
-      country: alumno.country.name,
-      username: alumno.username,
-    };
 
-    res.send(alumno ? objAlumno : "alumno no encontrado");
+    if(alumno){
+
+      res.status(200).send(alumno);
+    }else{
+      res.status(400).send('Alumno no encontrado.')
+    }
+
+
   } catch (err) {
     res.status(400).send({ msg: "Error en el servidor: ", err: err.message });
   }

@@ -1,6 +1,7 @@
 const { Router } = require("express");
 const {
-    createComent
+    createComent,
+    createComentonComentProfe
     ,editComent,
     eliminarComent,
     createComentonComent,
@@ -12,6 +13,7 @@ const router = Router();
 router.get('/:id',getComentsByProfeId)
 router.post("/", createComent);
 router.post("/coment/", createComentonComent);
+router.post("/coment/profesor", createComentonComentProfe)
 router.delete("/:id", eliminarComent);
 router.patch("/:id", editComent);
 module.exports = router;

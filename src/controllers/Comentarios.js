@@ -31,38 +31,79 @@ const createComent = async (req, res) => {
   const createComentonComent = async (req, res) => {
     try {
         
-        const { comentId,contenido, alumnoId } = req.body;
-        if(comentId){
-            
-    
-            if (!alumnoId) throw new Error(" AlumnoId no puede ser nulo");
-            const findAlumno = await Alumno.findByPk(alumnoId);
-            if (!findAlumno) throw new Error("No se encuentra el alumno");           
-
-            if (!comentId) throw new Error(" ComentId no puede ser nulo");
-            const coment = await Coments.findByPk(comentId);
-            if (!coment) throw new Error("No se encuentra el comentario");
-            const newComent = await Coments.create({
-                contenido, comentId, alumnoId
-            });
+          const { comentId,contenido, alumnoId } = req.body;
+          if(comentId){
               
+      
+              if (!alumnoId) throw new Error(" AlumnoId no puede ser nulo");
+              const findAlumno = await Alumno.findByPk(alumnoId);
+              if (!findAlumno) throw new Error("No se encuentra el alumno");           
+  
+              if (!comentId) throw new Error(" ComentId no puede ser nulo");
+              const coment = await Coments.findByPk(comentId);
+              if (!coment) throw new Error("No se encuentra el comentario");
+              const newComent = await Coments.create({
+                  contenido, comentId, alumnoId
+              });
+                
+          
+              // coment.addComents(newComent);
+          
+              res.status(200).send({
+                  msg: "Comentario Creado Exitosamente"
+              });
+          }else{
+            res.status(400).send({
+              msg:"Comentario no encontrado"
+            })
+          }
         
-            // coment.addComents(newComent);
         
-            res.status(200).send({
-                msg: "Comentario Creado Exitosamente"
-            });
-        }else{
-          res.status(400).send({
-            msg:"Comentario no encontrado"
-          })
-        }
       
     } catch (err) {
       res.status(500).send({ msg: "Erorr en el servidor: ", err: err.message });
     }
   };
 
+
+  const createComentonComentProfe = async (req, res) => {
+    try {
+       
+          const { comentId,contenido, profesorId } = req.body;
+          if(comentId){
+              
+      
+              if (!profesorId) throw new Error(" profesorId no puede ser nulo");
+              const finfProfe = await Profesor.findByPk(profesorId);
+              if (!finfProfe) throw new Error("No se encuentra el profesor");           
+  
+              if (!comentId) throw new Error(" ComentId no puede ser nulo");
+              const coment = await Coments.findByPk(comentId);
+              if (!coment) throw new Error("No se encuentra el comentario");
+              const newComent = await Coments.create({
+                  contenido, comentId, profesorId
+              });
+                
+          
+              // coment.addComents(newComent);
+          
+              res.status(200).send({
+                  msg: "Comentario Creado Exitosamente"
+              });
+          }else{
+            res.status(400).send({
+              msg:"Comentario no encontrado"
+            })
+          }
+      
+        
+      
+    } catch (err) {
+      res.status(500).send({ msg: "Erorr en el servidor: ", err: err.message });
+    }
+  };
+
+  
   const getComentsByProfeId=async (req,res)=>{
    
     try {
@@ -149,4 +190,4 @@ const createComent = async (req, res) => {
     }
   };
 
-  module.exports = {createComent,editComent,eliminarComent,getComentsByProfeId,  createComentonComent};
+  module.exports = {createComent,createComentonComentProfe,editComent,eliminarComent,getComentsByProfeId,  createComentonComent};
