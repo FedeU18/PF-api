@@ -117,6 +117,7 @@ const getById = async (req, res) => {
 const postProfe = async (req, res) => {
   const {
     id,
+    tipo,
     nombre,
     apellido,
     username,
