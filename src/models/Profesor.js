@@ -56,6 +56,14 @@ module.exports = (sequelize) => {
       },
       allowNull: true,
     },
+    edad: {
+      type: DataTypes.INTEGER,
+      allowNull: true,
+      validate: {
+        min: 10,
+        max: 80,
+      },
+    },
 
 
     estudios:{
