@@ -69,14 +69,12 @@ const getAllAlumnos = async (req, res) => {
 const editAlumno = async (req, res) => {
   try {
     const { id } = req.params;
-    const { name, lastname, age, picture, email, country } = req.body;
-
-    console.log("holaa lllegue linea 60");
-
+    const { name, lastname, age, picture, email, country,favourites } = req.body;
     const findAlumno = await Alumno.findByPk(id);
-    console.log(findAlumno);
+ 
     var fields = {};
-    fields.apellidos = "luna";
+ 
+    if(favourites) fields.favourites =favourites;
     if (name) fields.name = name;
     if (lastname) fields.lastname = lastname;
     if (age) fields.age = age;

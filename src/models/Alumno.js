@@ -36,5 +36,8 @@ module.exports = (sequelize) => {
       allowNull: false,
       unique: true,
     },
+    favourites:{
+      type:DataTypes.ARRAY(DataTypes.STRING)
+    },
   },{timestamps: false});
 };
