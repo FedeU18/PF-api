@@ -177,38 +177,58 @@ const deleteProfesor = async (req, res) => {
 };
 
 //put
-const putProfesor = async (req, res) => {
-  const { id } = req.params;
+const putProfesor = async (req, res) => {  
+
+
+  try {
+    const { id } = req.params;    
+    
   const {
     nombre,
     apellido,
-    username,
-    image,
-    email,
-    pais,
-    puntuacion,
+    imagen,
+    country,
     descripcion,
+    descripcion2,
     precio,
-    estudios,
     materias,
   } = req.body;
-  try {
-    const updateProfesor = await Profesor.findByPk(id);
-    updateProfesor.nombre = nombre;
-    updateProfesor.apellido = apellido;
-    updateProfesor.username = username;
-    updateProfesor.image = image;
-    updateProfesor.email = email;
-    updateProfesor.pais = pais;
-    updateProfesor.puntuacion = puntuacion;
-    updateProfesor.descripcion = descripcion;
-    updateProfesor.precio = precio;
-    updateProfesor.estudios = estudios;
-    updateProfesor.materias = materias;
-    await updateProfesor.save();
-    res.status(200).json({ msg: "cambios realizados correctamente " });
-  } catch (error) {
-    res.status(404).json({ message: error.message });
+
+    const findProfesor = await Profesor.findByPk(id);
+
+    var fields = {};
+   
+    if (nombre) fields.nombre = nombre;
+    if (apellido) fields.apellido = apellido;
+    if (descripcion) fields.descripcion = descripcion;
+    if (descripcion2) fields.descripcion2 = descripcion2;
+    if (imagen) fields.imagen = imagen;
+    if (precio) fields.precio = precio;
+    if (materias) fields.materias = materias;
+    if (country) {
+      let pais = await Country.findOne({
+        where: { name: country[0].toUpperCase() + country.substring(1) },
+      });
+      if (pais) {
+        fields.countryId = pais.id;
+      }
+    }
+    console.log(fields);
+    if (fields === {})
+      throw new Error("No se recibieron parametros para cambiar");
+
+    if (findProfesor) {
+      await findProfesor.update(fields);
+
+      res.status(200).send("Cambios guardados");
+    } else {
+      throw new Error(
+        "No se ha encontrado una categoria existente con el id ingresado."
+      );
+    }
+  } catch (err) {
+    console.log(err);
+    res.status(400).send(fields);
   }
 };
 
