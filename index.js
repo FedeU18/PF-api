@@ -17,12 +17,22 @@
 //     =====`-.____`.___ \_____/___.-`___.-'=====
 //                       `=---='
 //     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-const server = require("./src/app.js");
+const app = require("./src/app.js");
+const eventosSocket = require("./src/socketIO/servidorSocket.js");
 const { conn } = require("./src/db.js");
+const http = require("http");
+const { Server } = require("socket.io");
+const server = http.createServer(app);
+const io = new Server(server, {
+  cors: {
+    origin: "*",
+  },
+});
 
+eventosSocket(io);
 // Syncing all the models at once.
 
-conn.sync({ force: false }).then(() => {
+conn.sync({ force: true }).then(() => {
   server.listen(process.env.PORT, () => {
     console.log("%s listening at 3001"); // eslint-disable-line no-console
   });
