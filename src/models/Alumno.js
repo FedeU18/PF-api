@@ -7,6 +7,11 @@ module.exports = (sequelize) => {
       allowNull: false,
       primaryKey: true,
     },
+    username: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      unique: true,
+    },
     tipo: {
       type: DataTypes.STRING,
       allowNull: false,
@@ -31,5 +36,8 @@ module.exports = (sequelize) => {
       allowNull: false,
       unique: true,
     },
-  });
+    favourites:{
+      type:DataTypes.ARRAY(DataTypes.STRING)
+    },
+  },{timestamps: false});
 };

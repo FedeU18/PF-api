@@ -8,7 +8,7 @@ router.get("/",getProfesor);
 router.get("/:id",getById);
 router.post("/",postProfe);
 router.delete("/:id",deleteProfesor);
-router.put("/:id",putProfesor);
+router.patch("/:id",putProfesor);
 
 
 module.exports = router;

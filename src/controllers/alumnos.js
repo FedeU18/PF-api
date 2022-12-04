@@ -2,7 +2,8 @@ const { Alumno, Country } = require("../db.js");
 
 const createAlumno = async (req, res) => {
   //hicimos cambios desde fabian menjura
-  const { id, name, lastname, picture, age, email, country } = req.body;
+  const { id, name, lastname, picture, age, email, country, username } =
+    req.body;
   console.log(id);
   try {
     console.log(country[0].toUpperCase() + country.substring(1));
@@ -21,6 +22,7 @@ const createAlumno = async (req, res) => {
         age,
         email,
         countryId: pais.id,
+        username,
       },
     });
     if (created) {
@@ -40,18 +42,15 @@ const getAlumno = async (req, res) => {
       where: { id },
       include: [{ model: Country }],
     });
-    let objAlumno = {
-      id: alumno.id,
-      tipo: alumno.tipo,
-      name: alumno.name[0].toUpperCase() + alumno.name.substring(1),
-      lastname: alumno.lastname[0].toUpperCase() + alumno.lastname.substring(1),
-      age: alumno.age,
-      email: alumno.email,
-      picture: alumno.picture,
-      country: alumno.country.name,
-    };
 
-    res.send(alumno ? objAlumno : "alumno no encontrado");
+    if(alumno){
+
+      res.status(200).send(alumno);
+    }else{
+      res.status(400).send('Alumno no encontrado.')
+    }
+
+
   } catch (err) {
     res.status(400).send({ msg: "Error en el servidor: ", err: err.message });
   }
@@ -70,14 +69,12 @@ const getAllAlumnos = async (req, res) => {
 const editAlumno = async (req, res) => {
   try {
     const { id } = req.params;
-    const { name, lastname, age, picture, email, country } = req.body;
-
-    console.log("holaa lllegue linea 60");
-
+    const { name, lastname, age, picture, email, country,favourites } = req.body;
     const findAlumno = await Alumno.findByPk(id);
-    console.log(findAlumno);
+ 
     var fields = {};
-    fields.apellidos = "luna";
+ 
+    if(favourites) fields.favourites =favourites;
     if (name) fields.name = name;
     if (lastname) fields.lastname = lastname;
     if (age) fields.age = age;
