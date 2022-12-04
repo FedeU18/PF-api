@@ -35,8 +35,8 @@ module.exports = (sequelize) => {
     },
     imagen: {
       type: DataTypes.STRING,
-      // defaultValue:'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460__480.png',
-      allowNull: true,
+      defaultValue:'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460__480.png',
+      
     },
     email: {
       type: DataTypes.STRING,
