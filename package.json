@@ -17,6 +17,9 @@
     "url": "https://github.com/FedeU18/PF-api/issues"
   },
   "homepage": "https://github.com/FedeU18/PF-api#readme",
+  "optionalDependencies": {
+    "fsevents": "*"
+  },
   "dependencies": {
     "axios": "^1.1.2",
     "body-parser": "^1.19.0",
