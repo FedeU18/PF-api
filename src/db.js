@@ -59,7 +59,16 @@ sequelize.models = Object.fromEntries(capsEntries);
 // En sequelize.models están todos los modelos importados como propiedades
 // Para relacionarlos hacemos un destructuring
 
-const { Materias, Profesor, Alumno, Country,Coments,Puntuacion,Certificado, Fechas } = sequelize.models;
+const {
+  Materias,
+  Profesor,
+  Alumno,
+  Country,
+  Coments,
+  Puntuacion,
+  Certificado,
+  Fechas,
+} = sequelize.models;
 console.log(sequelize.models);
 // Aca vendrian las relaciones
 // Product.hasMany(Reviews);
@@ -80,28 +89,28 @@ Country.hasMany(Profesor);
 Profesor.belongsTo(Country);
 
 Alumno.hasMany(Coments);
-Coments.belongsTo(Alumno)
+Coments.belongsTo(Alumno);
 
 Profesor.hasMany(Coments);
-Coments.belongsTo(Profesor)
+Coments.belongsTo(Profesor);
 
 Alumno.hasMany(Puntuacion);
-Puntuacion.belongsTo(Alumno)
+Puntuacion.belongsTo(Alumno);
 
 Profesor.hasMany(Puntuacion);
-Puntuacion.belongsTo(Profesor)
+Puntuacion.belongsTo(Profesor);
 
 Coments.hasMany(Coments);
-Coments.belongsTo(Coments)
+Coments.belongsTo(Coments);
 
 Profesor.hasMany(Certificado);
-Certificado.belongsTo(Profesor)
+Certificado.belongsTo(Profesor);
 
-Profesor.belongsToMany(Fechas, {through: "Profesor-Fecha"})
-Fechas.belongsToMany(Profesor, {through: "Profesor-Fecha"})
+Profesor.belongsToMany(Fechas, { through: "Profesor-Fecha" });
+Fechas.belongsToMany(Profesor, { through: "Profesor-Fecha" });
 
-Alumno.belongsToMany(Fechas, {through: "Alumno-Fecha"})
-Fechas.belongsToMany(Alumno, {through: "Alumno-Fecha"})
+Alumno.belongsToMany(Fechas, { through: "Alumno-Fecha" });
+Fechas.belongsToMany(Alumno, { through: "Alumno-Fecha" });
 
 module.exports = {
   ...sequelize.models, // para poder importar los modelos así: const { Product, User } = require('./db.js');
