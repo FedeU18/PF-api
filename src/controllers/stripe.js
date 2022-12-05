@@ -4,7 +4,7 @@ const stripe = require("stripe")(SECRET_KEY);
 
 // /checkout-stripe
 const checkoutStripe = async (req, res) => {
-  const data = req.body;
+  const data = req.body; // 1 -establecemos el producto
 
   console.log(`${URL_PROTECTED}/payments`);
   const session = await stripe.checkout.sessions.create({
@@ -15,7 +15,8 @@ const checkoutStripe = async (req, res) => {
     cancel_url: `${URL_PROTECTED}/payments/fail`,
   });
 
-  res.json({ id: session.id });
+
+  res.json({ id: session.id, stripe: session });
 };
 
 const getcheckout = (req, res) => {
