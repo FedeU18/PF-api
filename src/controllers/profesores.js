@@ -1,4 +1,4 @@
-const { Profesor, Materias, Country,Puntuacion,Certificado,Coments, Alumno  } = require("../db.js");
+const { Profesor, Materias, Country,Puntuacion,Certificado,Coments, Alumno, Fechas  } = require("../db.js");
 
 const getProfesor = async (req, res) => {
   let { nombre } = req.query;
@@ -16,6 +16,13 @@ const getProfesor = async (req, res) => {
       { model:Puntuacion,
         attributes:["puntaje"]
       },
+      {
+        model: Fechas,
+        attributes: ["fecha", "hora"],
+        through: {
+          attributes: []
+        }
+      }
      
     ],
   });
@@ -83,8 +90,15 @@ const getById = async (req, res) => {
                 {model:Country}
               ]
               }
-          ]}
-      ]}
+          ]},
+      ]},
+      {
+        model: Fechas,
+        attributes: ["fecha", "hora"],
+        through: {
+          attributes: []
+        }
+      }
     ],
   });
 
