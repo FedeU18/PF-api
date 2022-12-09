@@ -97,7 +97,16 @@ const getById = async (req, res) => {
         attributes: ["fecha", "hora"],
         through: {
           attributes: []
-        }
+        },
+        include: [
+          {
+            model: Alumno,
+            attributes: ["name", "lastname"],
+            through: {
+              attributes: []
+            }
+          }
+        ]
       }
     ],
   });
