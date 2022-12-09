@@ -1,4 +1,4 @@
-const { Alumno, Country, Fechas } = require("../db.js");
+const { Alumno, Country, Fechas, Profesor } = require("../db.js");
 
 const createAlumno = async (req, res) => {
   //hicimos cambios desde fabian menjura
@@ -46,8 +46,17 @@ const getAlumno = async (req, res) => {
           model: Fechas,
           attributes: ["fecha","hora"],
           through: {
-            attributes:[]
-          }
+            attributes: []
+          },
+          include: [
+            {
+              model:Profesor,
+              attributes: ["id","nombre","apellido","imagen"],
+              through: {
+                attributes:[]
+              }
+            }
+          ]
         }
       ],
     });
