@@ -1,4 +1,4 @@
-const { Alumno, Country } = require("../db.js");
+const { Alumno, Country, Fechas, Profesor } = require("../db.js");
 
 const createAlumno = async (req, res) => {
   //hicimos cambios desde fabian menjura
@@ -40,7 +40,25 @@ const getAlumno = async (req, res) => {
   try {
     let alumno = await Alumno.findOne({
       where: { id },
-      include: [{ model: Country }],
+      include: [
+        { model: Country },
+        {
+          model: Fechas,
+          attributes: ["fecha","hora"],
+          through: {
+            attributes: []
+          },
+          include: [
+            {
+              model:Profesor,
+              attributes: ["id","nombre","apellido","imagen"],
+              through: {
+                attributes:[]
+              }
+            }
+          ]
+        }
+      ],
     });
 
     if(alumno){
@@ -57,7 +75,17 @@ const getAlumno = async (req, res) => {
 };
 
 const getAllAlumnos = async (req, res) => {
-  return Alumno.findAll({})
+  return Alumno.findAll({
+    include: [
+      {
+        model: Fechas,
+        attributes: ["fecha","hora"],
+        through: {
+          attributes: []
+        }
+      } 
+    ]
+  })
     .then((alumnos) => {
       res.send(alumnos);
     })
