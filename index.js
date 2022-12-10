@@ -34,6 +34,7 @@ const io = new Server(server, {
 });
 eventosSocket(io);
 // Syncing all the models at once.
+
 conn.sync({
     force: false
 }).then(() => {
