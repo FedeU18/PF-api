@@ -67,9 +67,21 @@ const getAllAlumnos = async (req, res) => {
 };
 
 const editAlumno = async (req, res) => {
+  console.log('editar alu')
+  console.log(req.body)
   try {
     const { id } = req.params;
-    const { name, lastname, age, picture, email, country,favourites } = req.body;
+    const { name,
+          lastname, 
+          age,
+          picture,
+          email,
+          country,
+          favourites,
+          baneado,
+          fechaLimiteBan,
+          razon } = req.body;
+          
     const findAlumno = await Alumno.findByPk(id);
  
     var fields = {};
@@ -80,6 +92,9 @@ const editAlumno = async (req, res) => {
     if (age) fields.age = age;
     if (picture) fields.picture = picture;
     if (email) fields.email = email;
+    if(baneado===true || baneado===false) fields.baneado=baneado;
+    if(fechaLimiteBan) fields.fechaLimiteBan=fechaLimiteBan;
+    if(razon) fields.razon=razon;
     if (country) {
       let pais = await Country.findOne({
         where: { name: country[0].toUpperCase() + country.substring(1) },
