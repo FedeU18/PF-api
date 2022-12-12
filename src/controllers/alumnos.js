@@ -2,7 +2,7 @@ const { Alumno, Country, Fechas, Profesor } = require("../db.js");
 
 const createAlumno = async (req, res) => {
   //hicimos cambios desde fabian menjura
-  const { id, name, lastname, picture, age, email, country, username } =
+  const { id, name, lastname, picture, age, email, country, username, promo} =
     req.body;
   console.log(id);
   try {
@@ -23,6 +23,7 @@ const createAlumno = async (req, res) => {
         email,
         countryId: pais.id,
         username,
+        promo,
       },
     });
     if (created) {
@@ -108,6 +109,7 @@ const editAlumno = async (req, res) => {
           favourites,
           baneado,
           fechaLimiteBan,
+          promo,
           razon } = req.body;
           
     const findAlumno = await Alumno.findByPk(id);
@@ -123,6 +125,7 @@ const editAlumno = async (req, res) => {
     if(baneado===true || baneado===false) fields.baneado=baneado;
     if(fechaLimiteBan) fields.fechaLimiteBan=fechaLimiteBan;
     if(razon) fields.razon=razon;
+    if(promo) fields.promo = promo;
     if (country) {
       let pais = await Country.findOne({
         where: { name: country[0].toUpperCase() + country.substring(1) },

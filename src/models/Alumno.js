@@ -51,6 +51,10 @@ module.exports = (sequelize) => {
     razon:{
       type:DataTypes.STRING,
     },
+    promo:{
+      type: DataTypes.BOOLEAN,
+      defaultValue: true,
+    }
 
   },{timestamps: false});
 };
