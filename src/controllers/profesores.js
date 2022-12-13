@@ -1,5 +1,167 @@
 const { Profesor, Materias, Country,Puntuacion,Certificado,Coments, Alumno, Fechas  } = require("../db.js");
+const getUsuariosPorPais=async(req,res)=>{
+  try {
+    let data=[
+      {          
+          name: "El Salvador",
+          "numero de usuarios por pais":0          
+      },
+      {          
+          name: "Uruguay",
+          "numero de usuarios por pais":0     
+      },
+      {          
+          name: "Argentina",
+          "numero de usuarios por pais":0  
+      },
+      {          
+          name: "Bolivia",
+          "numero de usuarios por pais":0  
+      },
+      {          
+          name: "Colombia",
+          "numero de usuarios por pais":0  
+      },
+      {          
+          name: "Nicaragua",
+          "numero de usuarios por pais":0  
+      },
+      {          
+          name: "Chile",
+          "numero de usuarios por pais":0  
+      },
+      {          
+          name: "Ecuador",
+          "numero de usuarios por pais":0  
+      },
+      {
+          name: "Paraguay",
+          "numero de usuarios por pais":0            
+      },
+      {        
+          name: "Puerto Rico",
+          "numero de usuarios por pais":0  
+      },
+      {          
+          name: "Costa Rica",
+          "numero de usuarios por pais":0  
+      },
+      {         
+          name: "Cuba",
+          "numero de usuarios por pais":0  
+      },
+      {          
+          name: "Guatemala",
+          "numero de usuarios por pais":0  
+      },
+      {         
+          name: "Honduras",
+          "numero de usuarios por pais":0  
+      },
+      {        
+          name: "Venezuela",
+          "numero de usuarios por pais":0  
+      }
+  ]
+    
+    let profesores=await Profesor.findAll({
+      include:[
+        {model:Country}
+      ]
+    })
+    let alumnos =await Alumno.findAll({
+      include:[
+        {model:Country}
+      ]
+    })
+    if(profesores.length>0){
+    profesores.map((p)=>{      
+        data.map((d)=>{
+          if(d.name===p.country.name){
+              d['numero de usuarios por pais']=(d['numero de usuarios por pais']+1)
+           
+          }
+        })         
+    })          
+  }
+  if(alumnos.length>0){
+    alumnos.map((p)=>{      
+        data.map((d)=>{
+          if(d.name===p.country.name){
+              d['numero de usuarios por pais']=(d['numero de usuarios por pais']+1)
+           
+          }
+        })
+         
+    })    
+      
+  }
+  function SortArray(y, x){
+    if (x['numero de usuarios por pais']  < y['numero de usuarios por pais'] ) {return -1;}
+    if (x['numero de usuarios por pais']  > y['numero de usuarios por pais'] ) {return 1;}
+    return 0;
+}
+  data=data.sort(SortArray)
+  res.status(200).json(data)
+  } catch (error) {
+    res.status(404).json({ msg: error });
+  }
 
+}
+
+const getProfesorsMaterias=async(req,res)=>{
+  try {
+    let data=[
+      {name:'algebra',value:0},
+      {name:'aritmética',value:0},
+      {name:'geometría',value:0} ,
+      {name:'trigonometría',value:0}, 
+      {name:'biología',value:0},
+      {name:'quimica',value:0}, 
+      {name:'fisica',value:0},
+      {name:'geografía',value:0},
+      {name:'economía',value:0},
+      {name:'historia',value:0},
+      {name:'arte',value:0},
+      {name:'música',value:0},
+      {name:'literatura',value:0},
+      {name:'lenguaje',value:0},
+      {name:'filosofía',value:0},
+      {name:'psicología',value:0},
+      {name:'ingles',value:0},
+      {name:'computación',value:0}
+    ] 
+    
+    let profesores=await Profesor.findAll({
+      include:[
+        {model:Materias}
+      ]
+    })
+    
+    if(profesores.length>0){
+    profesores.map((p)=>{
+      p.materias.map((pm)=>{
+        data.map((d)=>{
+          if(d.name===pm.name){
+              d.value=(d.value+1)
+           
+          }
+        })
+      })   
+    })    
+      function SortArray(y, x){
+        if (x.value  < y.value ) {return -1;}
+        if (x.value  > y.value ) {return 1;}
+        return 0;
+    }
+      data=data.sort(SortArray)
+  }
+  res.status(200).json(data)
+  } catch (error) {
+    res.status(404).json({ msg: error });
+  }
+
+}
 const getProfesor = async (req, res) => {
   let { nombre } = req.query;
 
@@ -277,4 +439,6 @@ module.exports = {
   postProfe,
   deleteProfesor,
   putProfesor,
+  getProfesorsMaterias,
+  getUsuariosPorPais
 };
