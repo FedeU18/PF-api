@@ -1,4 +1,7 @@
 const { Profesor, Materias, Country,Puntuacion,Certificado,Coments, Alumno, Fechas  } = require("../db.js");
+
+const { Op } = require("sequelize");
+
 const getUsuariosPorPais=async(req,res)=>{
   try {
     let data=[
@@ -106,6 +109,7 @@ const getUsuariosPorPais=async(req,res)=>{
   } catch (error) {
     res.status(404).json({ msg: error });
   }
+
 
 }
 
@@ -353,6 +357,72 @@ const postProfe = async (req, res) => {
   }
 };
 
+
+const fetchProfesor = async (req, res) => {
+  let { count, page, subject, sortBy, orderBy,pais } = req.query;
+  if(!count || !page )
+  return res.status(400).send({error:'missing query parameters'});
+
+  const limitt = parseInt(count);
+  const pageInt = parseInt(page);
+  const offsett = limitt * pageInt; 
+  let val = 'ASC';
+  let orderCondition = 'username';
+
+  if (isNaN(limitt) || isNaN(pageInt))
+  return res.status(400).send({error:'invalid value for query parameters'});
+
+  if (limitt<=0 || pageInt<0)
+  return res.status(400).send({error:'query parameters cannot contain negative value'});
+
+   if (sortBy){
+    orderCondition = sortBy
+
+  }else{
+    orderCondition = 'username'
+
+  };
+
+  if (orderBy){
+    val = orderBy
+
+  }else{
+    orderBy = 'DESC'
+
+  };
+
+  let info = await Profesor.findAndCountAll({
+    limit:limitt,
+    offset:offsett,
+    include: [
+      {
+        model: Materias, // va a buscar en el modelo mterias
+        attributes: ["name"],
+        where: {name : subject}
+      },
+      { model: Country,
+        where:{[Op.and]: [
+          pais && { name: pais },
+        ],
+      }
+       },
+      { model:Puntuacion,
+        attributes:["puntaje"]
+      },
+     
+    ],
+    order: [[orderCondition,val]], 
+  });
+  var obj = {
+    cantidad:  info.count,
+    profes: info.rows
+    
+  };
+  res.send (obj);
+
+  
+};
+
 //
 
 // para borrar del todo !
@@ -439,6 +509,10 @@ module.exports = {
   postProfe,
   deleteProfesor,
   putProfesor,
+
+  fetchProfesor,
+
   getProfesorsMaterias,
   getUsuariosPorPais
+
 };
