@@ -41,7 +41,7 @@ const getAllNotificaciones=async (req, res)=>{
             res.status(200).json(notificacionesFinal);
         }
         if (buscarNotificaciones.length===0){
-            res.status(200).json({msg:'Sin Notificaciones que mostrar '});
+            res.status(200).json({msg:'Sin Notificaciones que mostrar .'});
         }
        
     } catch (error) {
