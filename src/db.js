@@ -68,6 +68,7 @@ const {
   Puntuacion,
   Certificado,
   Fechas,
+  Notificaciones,
 } = sequelize.models;
 console.log(sequelize.models);
 // Aca vendrian las relaciones
@@ -94,14 +95,14 @@ Coments.belongsTo(Alumno);
 Profesor.hasMany(Coments);
 Coments.belongsTo(Profesor);
 
+Coments.hasMany(Coments);
+Coments.belongsTo(Coments);
+
 Alumno.hasMany(Puntuacion);
 Puntuacion.belongsTo(Alumno);
 
 Profesor.hasMany(Puntuacion);
 Puntuacion.belongsTo(Profesor);
-
-Coments.hasMany(Coments);
-Coments.belongsTo(Coments);
 
 Profesor.hasMany(Certificado);
 Certificado.belongsTo(Profesor);

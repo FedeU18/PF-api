@@ -7,6 +7,7 @@ module.exports = (sequelize) => {
       allowNull: false,
       primaryKey: true,
     },
+    
     username: {
       type: DataTypes.STRING,
       allowNull: false,
@@ -40,5 +41,20 @@ module.exports = (sequelize) => {
     favourites:{
       type:DataTypes.ARRAY(DataTypes.STRING)
     },
+    baneado:{
+      type:  DataTypes.BOOLEAN,
+        defaultValue: false,
+    },
+    fechaLimiteBan:{
+      type:DataTypes.DATEONLY
+    },
+    razon:{
+      type:DataTypes.STRING,
+    },
+    promo:{
+      type: DataTypes.BOOLEAN,
+      defaultValue: true,
+    }
+
   },{timestamps: false});
 };

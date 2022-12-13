@@ -25,6 +25,9 @@ const getProfesor = async (req, res) => {
       }
      
     ],
+    where:{
+      administrador:false
+    }
   });
 
   try {
@@ -97,7 +100,16 @@ const getById = async (req, res) => {
         attributes: ["fecha", "hora"],
         through: {
           attributes: []
-        }
+        },
+        include: [
+          {
+            model: Alumno,
+            attributes: ["name", "lastname"],
+            through: {
+              attributes: []
+            }
+          }
+        ]
       }
     ],
   });
@@ -209,6 +221,10 @@ const putProfesor = async (req, res) => {
     descripcion2,
     precio,
     materias,
+    administrador,
+    baneado,
+    fechaLimiteBan,
+    razon
   } = req.body;
 
     const findProfesor = await Profesor.findByPk(id);
@@ -219,8 +235,12 @@ const putProfesor = async (req, res) => {
     if (apellido) fields.apellido = apellido;
     if (descripcion) fields.descripcion = descripcion;
     if (descripcion2) fields.descripcion2 = descripcion2;
+    if(administrador) fields.administrador=administrador;
     if (imagen) fields.imagen = imagen;
     if (precio) fields.precio = precio;
+    if(baneado===true || baneado===false) fields.baneado=baneado;
+    if(fechaLimiteBan) fields.fechaLimiteBan=fechaLimiteBan;
+    if(razon) fields.razon=razon;
     if (materias) fields.materias = materias;
     if (country) {
       let pais = await Country.findOne({

@@ -9,6 +9,10 @@ module.exports = (sequelize) => {
       allowNull: false,
       primaryKey: true,
     },
+    administrador:{
+      type:  DataTypes.BOOLEAN,
+        defaultValue: false,
+    },
     tipo: {
       type: DataTypes.STRING,
       allowNull: false,
@@ -65,12 +69,20 @@ module.exports = (sequelize) => {
       },
     },
 
-
     estudios:{
       type:DataTypes.ARRAY(DataTypes.STRING),
       allowNull: true
-    }
-
+    },
+    baneado:{
+      type:  DataTypes.BOOLEAN,
+        defaultValue: false,
+    },
+    fechaLimiteBan:{
+      type:DataTypes.DATEONLY
+    },
+    razon:{
+      type:DataTypes.STRING,
+    },
  
 
   },{timestamps: false});
