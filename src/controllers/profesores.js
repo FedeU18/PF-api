@@ -192,7 +192,8 @@ const getProfesor = async (req, res) => {
      
     ],
     where:{
-      administrador:false
+      administrador:false,
+      baneado:false
     }
   });
 
