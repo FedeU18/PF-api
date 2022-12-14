@@ -33,7 +33,7 @@ eventosSocket(io);
 
 conn
   .sync({
-    force: false,
+    force: true,
   })
   .then(() => {
     server.listen(process.env.PORT, () => {
