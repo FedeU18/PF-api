@@ -3,6 +3,9 @@ const { SECRET_KEY, URL_PROTECTED } = process.env;
 const stripe = require("stripe")(SECRET_KEY);
 
 // /checkout-stripe
+const PAGE =
+  "http://localhost:5173" || "https://find-your-teacher-pf.vercel.app";
+
 const checkoutStripe = async (req, res) => {
   const data = req.body; // 1 -establecemos el producto
 
@@ -14,7 +17,6 @@ const checkoutStripe = async (req, res) => {
     success_url: `${URL_PROTECTED}/payments/success`,
     cancel_url: `${URL_PROTECTED}/payments/fail`,
   });
-
 
   res.json({ id: session.id, stripe: session });
 };
